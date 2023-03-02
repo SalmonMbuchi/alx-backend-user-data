@@ -4,7 +4,7 @@ import logging
 import os
 import re
 from typing import List, Tuple
-from mysql.connector import (connection)
+import mysql.connector
 
 
 PII_FIELDS: Tuple[str, str, str, str, str] = ('name', 'email',
@@ -59,15 +59,14 @@ def get_logger(self) -> logging.Logger:
 
     return logger
 
-def get_db() -> connection.MySQLConnection:
-    """connect to a database"""
-    os.environ['PERSONAL_DATA_DB_USERNAME'] = 'root'
-    os.environ['PERSONAL_DATA_DB_PASSWORD'] = ''
-    os.environ['PERSONAL_DATA_DB_HOST'] = 'localhost'
-    os.environ['PERSONAL_DATA_DB_NAME'] = ''
 
-    cnx = connection.MySQLConnection(user=os.environ.get('PERSONAL_DATA_DB_USERNAME'),
-                                            password=os.environ.get('PERSONAL_DATA_DB_PASSWORD'),
-                                            host=os.environ.get('PERSONAL_DATA_DB_HOST'),
-                                            database=os.environ.get('PERSONAL_DATA_DB_NAME'))
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """connect to a database"""
+    user = os.environ['PERSONAL_DATA_DB_USERNAME'] or 'root'
+    password = os.environ['PERSONAL_DATA_DB_PASSWORD'] or ''
+    host = os.environ['PERSONAL_DATA_DB_HOST'] or 'localhost'
+    database = os.environ['PERSONAL_DATA_DB_NAME'] or ''
+
+    cnx = mysql.connector.connect(user=user, password=password,
+                                  host=host, database=database)
     return cnx
