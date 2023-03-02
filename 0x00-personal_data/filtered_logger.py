@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Obfuscate"""
 import logging
+import os
 import re
 from typing import List, Tuple
+from mysql.connector import (connection)
 
 
 PII_FIELDS: Tuple[str, str, str, str, str] = ('name', 'email',
@@ -56,3 +58,16 @@ def get_logger(self) -> logging.Logger:
     logger.addHandler(ch)
 
     return logger
+
+def get_db() -> connection.MySQLConnection:
+    """connect to a database"""
+    os.environ['PERSONAL_DATA_DB_USERNAME'] = 'root'
+    os.environ['PERSONAL_DATA_DB_PASSWORD'] = ''
+    os.environ['PERSONAL_DATA_DB_HOST'] = 'localhost'
+    os.environ['PERSONAL_DATA_DB_NAME'] = 'holberton'
+
+    cnx = connection.MySQLConnection(user=os.environ.get('PERSONAL_DATA_DB_USERNAME'),
+                                            password=os.environ.get('PERSONAL_DATA_DB_PASSWORD'),
+                                            host=os.environ.get('PERSONAL_DATA_DB_HOST'),
+                                            database=os.environ.get('PERSONAL_DATA_DB_NAME'))
+    return cnx
