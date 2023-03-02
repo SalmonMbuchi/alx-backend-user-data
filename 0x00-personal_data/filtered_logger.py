@@ -64,7 +64,7 @@ def get_db() -> connection.MySQLConnection:
     os.environ['PERSONAL_DATA_DB_USERNAME'] = 'root'
     os.environ['PERSONAL_DATA_DB_PASSWORD'] = ''
     os.environ['PERSONAL_DATA_DB_HOST'] = 'localhost'
-    os.environ['PERSONAL_DATA_DB_NAME'] = 'holberton'
+    os.environ['PERSONAL_DATA_DB_NAME'] = ''
 
     cnx = connection.MySQLConnection(user=os.environ.get('PERSONAL_DATA_DB_USERNAME'),
                                             password=os.environ.get('PERSONAL_DATA_DB_PASSWORD'),
