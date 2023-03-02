@@ -70,3 +70,13 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     cnx = mysql.connector.connect(user=user, password=password,
                                   host=host, database=database)
     return cnx
+    
+if __name__ == "__main__":
+    def main() -> None:
+        """Retrirve data and display under a filtered format"""
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM users;")
+        formatter = RedactingFormatter(cursor)
+        cursor.close()
+        db.close()
