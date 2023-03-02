@@ -41,7 +41,7 @@ class RedactingFormatter(logging.Formatter):
         return redacted
 
 
-def get_logger(self) -> logging.Logger:
+def get_logger() -> logging.Logger:
     """Create a logger"""
     # create logger
     logger = logging.getLogger('user_data')
@@ -70,13 +70,21 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     cnx = mysql.connector.connect(user=user, password=password,
                                   host=host, database=database)
     return cnx
-    
+
+
+def main() -> None:
+    """Retrirve data and display under a filtered format"""
+    db = get_db()
+    logger = get_logger()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    fields = cursor.column_names
+    for row in cursor:
+        message = "".join("{}={};".format(k, v) for k, v in zip(fields, row))
+        logger.info(message.strip())
+    cursor.close()
+    db.close()
+
+
 if __name__ == "__main__":
-    def main() -> None:
-        """Retrirve data and display under a filtered format"""
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM users;")
-        formatter = RedactingFormatter(cursor)
-        cursor.close()
-        db.close()
+    main()
