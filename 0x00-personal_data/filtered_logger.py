@@ -6,7 +6,7 @@ from typing import List, Tuple
 
 
 PII_FIELDS: Tuple[str, str, str, str, str] = ('name', 'email',
-                                              'phone', 'ssn', 'ip')
+                                              'phone', 'ssn', 'last_login')
 
 
 def filter_datum(fields: List[str], redaction: str,
