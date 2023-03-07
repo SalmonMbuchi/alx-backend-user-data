@@ -18,20 +18,20 @@ auth = None
 if getenv("AUTH_TYPE") == "auth":
     auth = Auth()
 
-    #def filter():
-    #"""Filter each request"""
-    #if auth is None:
-    #    pass
-    #excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
-    #                        '/api/v1/forbidden/']
-    #if auth.require_auth(request.path, excluded_paths):
-    #    pass
-    #if auth.authorization_header(request) is None:
-    #    abort(401)
-    #if auth.current_user(request) is None:
-    #    abort(403)
+# def filter():
+    # """Filter each request"""
+    # if auth is None:
+    #     pass
+    # excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
+    #                         '/api/v1/forbidden/']
+    # if auth.require_auth(request.path, excluded_paths):
+    #     pass
+    # if auth.authorization_header(request) is None:
+    #     abort(401)
+    # if auth.current_user(request) is None:
+    #     abort(403)
 
-#app.before_request(filter)
+# app.before_request(filter)
 
 
 @app.errorhandler(404)
@@ -46,6 +46,7 @@ def unauthorized(error) -> str:
     """Unauthorized access
     """
     return jsonify({'error': 'Unauthorized'}), 401
+
 
 @app.errorhandler(403)
 def forbidden(error) -> str:
