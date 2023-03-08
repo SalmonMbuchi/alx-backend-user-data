@@ -24,6 +24,7 @@ if getenv("AUTH_TYPE") == "session_auth":
     from api.v1.auth.session_auth import SessionAuth
     auth = SessionAuth()
 
+
 def filter_req():
     """Filter each request"""
     if auth:

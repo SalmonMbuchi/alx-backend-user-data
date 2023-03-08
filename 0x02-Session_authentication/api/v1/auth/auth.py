@@ -8,6 +8,7 @@ from os import getenv
 
 SESSION_NAME = '_my_session_id'
 
+
 class Auth:
     """Authentication class that will serve as a template
     for all authentication systems to be implemented"""
