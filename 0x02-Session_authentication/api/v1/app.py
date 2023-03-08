@@ -25,6 +25,7 @@ if getenv("AUTH_TYPE") == "session_auth":
     auth = SessionAuth()
 
 
+@app.before_request
 def filter_req():
     """Filter each request"""
     if auth:
@@ -32,16 +33,12 @@ def filter_req():
                           '/api/v1/forbidden/', '/api/v1/auth_session/login/']
         if auth.require_auth(request.path, excluded_paths):
             user = auth.current_user(request)
-            if auth.authorization_header(request) is None:
-                abort(401)
-            if auth.session_cookie(request) is None:
+            if auth.authorization_header(request) is None and \
+                    auth.session_cookie(request) is None:
                 abort(401)
             if user is None:
                 abort(403)
             request.current_user = user
-
-
-app.before_request(filter_req)
 
 
 @app.errorhandler(404)
