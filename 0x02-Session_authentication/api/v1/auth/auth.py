@@ -6,9 +6,6 @@ from models.user import User
 from os import getenv
 
 
-SESSION_NAME = '_my_session_id'
-
-
 class Auth:
     """Authentication class that will serve as a template
     for all authentication systems to be implemented"""
@@ -50,4 +47,4 @@ class Auth:
         """Returns a cookie value from a request"""
         if request is None:
             return None
-        return request.cookies.get(SESSION_NAME)
+        return request.cookies.get(getenv('SESSION_NAME'))
