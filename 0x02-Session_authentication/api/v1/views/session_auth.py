@@ -28,3 +28,17 @@ def login() -> str:
             user.set_cookie(getenv('SESSION_NAME'), session_id)
             return user
         return jsonify({'error': 'wrong password'}), 401
+
+
+@app_views.route('/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
+def logout():
+    """
+    DELETE /api/v1/auth_session/logout
+    Return:
+        - Empty dictionary, status code 200
+    """
+    from api.v1.app import auth
+    if auth.destroy_session(request):
+        return jsonify({}), 200
+    abort(404)
