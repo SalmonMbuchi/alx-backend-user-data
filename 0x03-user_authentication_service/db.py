@@ -49,10 +49,10 @@ class DB:
         keys = ['id', 'email', 'hashed_password', 'session_id', 'reset_token']
         key = list(kwargs.keys())[0]
         if key not in keys:
-            raise InvalidRequestError
+            raise InvalidRequestError()
         user = self._session.query(User).filter_by(**kwargs).first()
         if not user:
-            raise NoResultFound
+            raise NoResultFound()
         return user
 
     def update_user(self, user_id: int, **kwargs) -> None:
