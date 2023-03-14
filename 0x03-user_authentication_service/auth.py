@@ -50,12 +50,12 @@ class Auth:
         except NoResultFound:
             return False
 
-#     def _generate_uuid(self) -> str:
-#         """
-#         Return:
-#             - string representation of UUID
-#         """
-#         return str(uuid4())
+    def _generate_uuid(self) -> str:
+        """
+        Return:
+            - string representation of UUID
+        """
+        return str(uuid4())
 
 #     def create_session(self, email: str) -> str:
 #         """
