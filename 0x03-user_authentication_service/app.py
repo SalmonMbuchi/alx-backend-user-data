@@ -83,6 +83,7 @@ def profile():
     return jsonify({'email': user.email}), 200
 
 
+@app.route('/reset_password', methods=['POST'], strict_slashes=False)
 AUTH = Auth()
 
 if __name__ == '__main__':
