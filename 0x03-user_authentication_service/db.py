@@ -49,7 +49,7 @@ class DB:
         for key in kwargs.keys():
             if not hasattr(User, key):
                 raise InvalidRequestError
-        user = self._session.query(User).filter_by(**kwargs).first()
+        user = self._session.query(User).filter(**kwargs).first()
         if not user:
             raise NoResultFound
         return user
