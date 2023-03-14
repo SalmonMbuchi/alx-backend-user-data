@@ -47,7 +47,7 @@ class DB:
             - first row as filtered by kwargs
         """
         keys = ['id', 'email', 'hashed_password', 'session_id', 'reset_token']
-        key = list(kwargs.keys())[0] 
+        key = list(kwargs.keys())[0]
         if key not in keys:
             raise InvalidRequestError
         user = self._session.query(User).filter_by(**kwargs).first()
