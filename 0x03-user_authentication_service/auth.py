@@ -45,7 +45,8 @@ class Auth:
         try:
             user = self._db.find_user_by(email=email)
             encoded = password.encode('utf-8')
-            return bcrypt.checkpw(encoded, user.hashed_password.encode('utf-8'))
+            return bcrypt.checkpw(encoded,
+                                  user.hashed_password.encode('utf-8'))
         except NoResultFound:
             return False
 
@@ -58,7 +59,8 @@ class Auth:
 
     def create_session(self, email: str) -> str:
         """
-        Finds the user via email, generates a UUID and stores it as the user's session id
+        Finds the user via email, generates a UUID and
+        stores it as the user's session id
         """
         try:
             user = self._db.find_user_by(email=email)
