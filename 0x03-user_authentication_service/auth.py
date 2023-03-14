@@ -4,7 +4,7 @@ Hash password
 """
 import bcrypt
 from db import DB
-from user import User
+# from user import User
 from sqlalchemy.orm.exc import NoResultFound
 import uuid
 
@@ -24,7 +24,7 @@ class Auth:
     def __init__(self):
         self._db = DB()
 
-    def register_user(self, email: str, password: str) -> User:
+    def register_user(self, email: str, password: str):
         """
         Hash the password, save user to database
         Return:
