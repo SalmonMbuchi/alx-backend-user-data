@@ -16,6 +16,7 @@ def _hash_password(password: str) -> bytes:
     encoded = password.encode('utf-8')
     return bcrypt.hashpw(encoded, bcrypt.gensalt())
 
+
 class Auth:
     """Auth class to interact with the authentication database.
     """
@@ -61,7 +62,7 @@ class Auth:
         """
         try:
             user = self._db.find_user_by(email=email)
-            session_id = self._generate_uuid()    
+            session_id = self._generate_uuid()
             self._db.update_user(user.id, session_id=session_id)
             return session_id
         except NoResultFound:

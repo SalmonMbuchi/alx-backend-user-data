@@ -2,10 +2,12 @@
 """
 Flask app
 """
+from auth import Auth
 from flask import (Flask, abort, jsonify, redirect, request, url_for)
 
 
 app = Flask(__name__)
+
 
 @app.route('/', methods=['GET'], strict_slashes=False)
 def index():
@@ -13,6 +15,7 @@ def index():
     Return: a JSON payload
     """
     return jsonify({'message': 'Bienvenue'})
+
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
 def users():
@@ -30,6 +33,7 @@ def users():
         return jsonify({'email': email, 'message': 'user created'})
     except ValueError:
         return jsonify({'message': 'email already registered'}), 400
+
 
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login():
@@ -49,6 +53,7 @@ def login():
         return cookie
     abort(401)
 
+
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout():
     """
@@ -63,6 +68,7 @@ def logout():
     AUTH.destroy_session(user.id)
     return redirect(url_for('index'))
 
+
 @app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile():
     """
@@ -76,7 +82,7 @@ def profile():
         abort(403)
     return jsonify({'email': user.email}), 200
 
-from auth import Auth
+
 AUTH = Auth()
 
 if __name__ == '__main__':
