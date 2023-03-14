@@ -58,18 +58,18 @@ class Auth:
         uuid = uuid.uuid4()
         return str(uuid)
 
-#     def create_session(self, email: str) -> str:
-#         """
-#         Finds the user via email, generates a UUID and
-#         stores it as the user's session id
-#         """
-#         try:
-#             user = self._db.find_user_by(email=email)
-#             session_id = self._generate_uuid()
-#             self._db.update_user(user.id, session_id=session_id)
-#             return session_id
-#         except NoResultFound:
-#             return None
+    def create_session(self, email: str) -> str:
+        """
+        Finds the user via email, generates a UUID and
+        stores it as the user's session id
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+            session_id = self._generate_uuid()
+            self._db.update_user(user.id, session_id=session_id)
+            return session_id
+        except NoResultFound:
+            return None
 
 #     def get_user_from_session_id(self, session_id: str) -> User | None:
 #         """
