@@ -55,7 +55,8 @@ class Auth:
         Return:
             - string representation of UUID
         """
-        return str(uuid4())
+        uuid = uuid4()
+        return str(uuid)
 
 #     def create_session(self, email: str) -> str:
 #         """
