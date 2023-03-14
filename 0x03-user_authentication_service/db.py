@@ -53,7 +53,8 @@ class DB:
                 values.append(value)
             else:
                 raise InvalidRequestError
-        user = self._session.query(User).filter(tuple_(*col).in_([tuple(values)])).first()
+        user = self._session.query(User).filter(tuple_(*col).
+                                                in_([tuple(values)])).first()
         if user is None:
             raise NoResultFound
         return user
