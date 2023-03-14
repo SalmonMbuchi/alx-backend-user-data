@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, tuple_
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -46,10 +46,14 @@ class DB:
         Return:
             - first row as filtered by kwargs
         """
-        for key in kwargs.keys():
-            if not hasattr(User, key):
+        col, values = [], []
+        for key, value in kwargs.items():
+            if hasattr(User, key):
+                col.append(getattr(User, key))
+                values.append(value)
+            else:
                 raise InvalidRequestError
-        user = self._session.query(User).filter_by(**kwargs).first()
+        user = self._session.query(User).filter(tuple_(*col).in_([tuple(values)])).first()
         if user is None:
             raise NoResultFound
         return user
