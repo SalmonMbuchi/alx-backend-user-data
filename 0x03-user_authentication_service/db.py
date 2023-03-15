@@ -54,14 +54,14 @@ class DB:
             raise NoResultFound
         return user
 
-    def update_user(self, user_id: int, **kwargs) -> None:
-        """
-        Updates user attributes
-        """
-        user = self.find_user_by(id=user_id)
-        for key in kwargs.keys():
-            param = kwargs.get(key)
-            if not isinstance(param, str):
-                raise ValueError
-            user.key = param
-            self._session.commit()
+    # def update_user(self, user_id: int, **kwargs) -> None:
+    #     """
+    #     Updates user attributes
+    #     """
+    #     user = self.find_user_by(id=user_id)
+    #     for key in kwargs.keys():
+    #         param = kwargs.get(key)
+    #         if not isinstance(param, str):
+    #             raise ValueError
+    #         user.key = param
+    #         self._session.commit()
