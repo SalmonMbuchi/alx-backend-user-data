@@ -49,7 +49,7 @@ class DB:
         # all_users = self._session.query(User)
         fields, values = [], []
         for k, v in kwargs.items():
-            if k not in User.__dict__:
+            if not hasattr(User, k):
                 raise InvalidRequestError
             else:
                 fields.append(getattr(User, k))
