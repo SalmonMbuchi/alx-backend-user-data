@@ -46,14 +46,15 @@ class DB:
         Return:
             - first row as filtered by kwargs
         """
-        col, values = [], []
-        for key, value in kwargs.items():
-            if hasattr(User, key):
-                col.append(getattr(User, key))
-                values.append(value)
-            else:
+        # all_users = self._session.query(User)
+        fields, values = [], []
+        for k, v in kwargs.items():
+            if k not in User.__dict__:
                 raise InvalidRequestError
-        user = self._session.query(User).filter(tuple_(*col).
+            else:
+                fields.append(getattr(User, k))
+                values.append(v)
+        user = self._session.query(User).filter(tuple_(*fields).
                                                 in_([tuple(values)])).first()
         if user is None:
             raise NoResultFound
