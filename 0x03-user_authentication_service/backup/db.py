@@ -60,8 +60,8 @@ class DB:
         """
         user = self.find_user_by(id=user_id)
         for key in kwargs.keys():
-            param = kwargs.get(key)
-            if not isinstance(param, str):
+            value = kwargs.get(key)
+            if not isinstance(value, str):
                 raise ValueError
-            user.key = param
+            user.key = value
             self._session.commit()
