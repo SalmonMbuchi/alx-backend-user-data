@@ -46,12 +46,19 @@ class DB:
         Return:
             - first row as filtered by kwargs
         """
+        if not kwargs:
+            raise InvalidRequestError
+
+        column_names = User.__table__.columns.keys()
         for key in kwargs.keys():
-            if not hasattr(User, key):
+            if key not in column_names:
                 raise InvalidRequestError
+
         user = self._session.query(User).filter_by(**kwargs).first()
-        if not user:
+
+        if user is None:
             raise NoResultFound
+
         return user
 
     def update_user(self, user_id: int, **kwargs) -> None:
@@ -59,9 +66,13 @@ class DB:
         Updates user attributes
         """
         user = self.find_user_by(id=user_id)
+
+        column_names = User.__table__.columns.keys()
         for key in kwargs.keys():
-            value = kwargs.get(key)
-            if not isinstance(value, str):
+            if key not in column_names:
                 raise ValueError
-            user.key = value
-            self._session.commit()
+
+        for key, value in kwargs.items():
+            setattr(user, key, value)
+
+        self._session.commit()
