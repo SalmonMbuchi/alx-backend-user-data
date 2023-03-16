@@ -46,26 +46,22 @@ class DB:
         Return:
             - first row as filtered by kwargs
         """
-        users = self._session.query(User)
-        for k, v in kwargs.items():
-            if k not in User.__dict__:
+        for key in kwargs.keys():
+            if not hasattr(User, key):
                 raise InvalidRequestError
-            for user in users:
-                if getattr(user, k) == v:
-                    return user
-        raise NoResultFound
+        user = self._session.query(User).filter_by(**kwargs).first()
+        if not user:
+            raise NoResultFound
+        return user
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """
         Updates user attributes
         """
-        try:
-            usr = self.find_user_by(id=user_id)
-        except NoResultFound:
-            raise ValueError()
-        for k, v in kwargs.items():
-            if hasattr(usr, k):
-                setattr(usr, k, v)
-            else:
+        user = self.find_user_by(id=user_id)
+        for key in kwargs.keys():
+            param = kwargs.get(key)
+            if not isinstance(param, str):
                 raise ValueError
-        self._session.commit()
+            user.key = param
+            self._session.commit()
