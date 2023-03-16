@@ -40,3 +40,16 @@ class DB:
         self._session.add(user)
         self._session.commit()
         return user
+
+    def find_user_by(self, **kwargs):
+        """
+        Return:
+            - first row as filtered by kwargs
+        """
+        for key in kwargs.keys():
+            if key not in User.__table__.columns.keys():
+                raise InvalidRequestError
+        user = self._session.query(User).filter_by(**kwargs).first()
+        if not user:
+            raise NoResultFound
+        return user
