@@ -46,10 +46,11 @@ class DB:
         Return:
             - first row as filtered by kwargs
         """
-        for key in kwargs.keys():
-            if key not in User.__table__.columns.keys():
+        all_users = self._session.query(User)
+        for k, v in kwargs.items():
+            if k not in User.__dict__:
                 raise InvalidRequestError
-        user = self._session.query(User).filter_by(**kwargs).first()
-        if not user:
-            raise NoResultFound
-        return user
+            for usr in all_users:
+                if getattr(usr, k) == v:
+                    return usr
+        raise NoResultFound
