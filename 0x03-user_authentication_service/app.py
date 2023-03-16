@@ -4,6 +4,7 @@ Flask app
 """
 from auth import Auth
 from flask import (Flask, abort, jsonify, redirect, request, url_for)
+from sqlalchemy.orm.exc import NoResultFound
 
 
 app = Flask(__name__)
@@ -84,6 +85,37 @@ def profile():
 
 
 @app.route('/reset_password', methods=['POST'], strict_slashes=False)
+def get_reset_password_token():
+    """
+    generates a reset token
+    """
+    email = request.form.get('email')
+    if email is None:
+        abort(403)
+    try:
+        token = AUTH.get_reset_password_token(email)
+        return jsonify({'email': email, 'reset_token': token}), 200
+    except NoResultFound:
+        abort(403)
+
+
+@app.route('/reset_password', methods=['PUT'], strict_slashes=False)
+def update_password():
+    """
+    Update the password
+    """
+    email = request.form.get('email')
+    reset_token = request.form.get('reset_token')
+    new_password = request.form.get('new_password')
+    if email or reset_token or new_password is None:
+        abort(403)
+    try:
+        AUTH.update_password(reset_token, new_password)
+        return jsonify({'email': email, 'message': 'Password updated'}), 200
+    except NoResultFound:
+        abort(403)
+
+
 AUTH = Auth()
 
 if __name__ == '__main__':
