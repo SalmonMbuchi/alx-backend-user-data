@@ -47,7 +47,7 @@ class DB:
             - first row as filtered by kwargs
         """
         for key in kwargs.keys():
-            if not hasattr(User, key):
+            if key not in User.__table__.columns.keys():
                 raise InvalidRequestError
         user = self._session.query(User).filter_by(**kwargs).first()
         if not user:
