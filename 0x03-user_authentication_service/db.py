@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
-from sqlalchemy import create_engine, tuple_
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -46,16 +46,22 @@ class DB:
         Return:
             - first row as filtered by kwargs
         """
-        fields, values = [], []
-        for key, value in kwargs.items():
-            if hasattr(User, key):
-                fields.append(getattr(User, key))
-                values.append(value)
-            else:
+        for key in kwargs.keys():
+            if not hasattr(User, key):
                 raise InvalidRequestError
-        result = self._session.query(User).filter(
-            tuple_(*fields).in_([tuple(values)])
-        ).first()
-        if result is None:
+        user = self._session.query(User).filter_by(**kwargs).first()
+        if not user:
             raise NoResultFound
-        return result
+        return user
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """
+        Updates user attributes
+        """
+        user = self.find_user_by(id=user_id)
+        for key in kwargs.keys():
+            param = kwargs.get(key)
+            if not isinstance(param, str):
+                raise ValueError
+            user.key = param
+            self._session.commit()
