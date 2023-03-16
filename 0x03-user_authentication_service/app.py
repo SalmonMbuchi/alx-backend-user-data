@@ -103,9 +103,13 @@ def update_password():
     Update the password
     """
     email = request.form.get('email')
+    if email is None:
+        abort(403)
     reset_token = request.form.get('reset_token')
+    if reset_token is None:
+        abort(403)
     new_password = request.form.get('new_password')
-    if email or reset_token or new_password is None:
+    if new_password is None:
         abort(403)
     try:
         AUTH.update_password(reset_token, new_password)
